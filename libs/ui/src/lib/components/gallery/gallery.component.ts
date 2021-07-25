@@ -17,3 +17,4 @@ export class GalleryComponent implements OnInit {
     this.selectedImage = image
   }
 }
+

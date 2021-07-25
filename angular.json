@@ -323,15 +323,26 @@
       }
     },
     "ui": {
+      "projectType": "library",
       "root": "libs/ui",
       "sourceRoot": "libs/ui/src",
-      "projectType": "library",
+      "prefix": "ui",
       "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "outputs": ["dist/libs/ui"],
           "options": {
-            "lintFilePatterns": ["libs/ui/**/*.ts"]
-          }
+            "project": "libs/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@nrwl/jest:jest",
@@ -339,6 +350,12 @@
           "options": {
             "jestConfig": "libs/ui/jest.config.js",
             "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui/src/**/*.ts", "libs/ui/src/**/*.html"]
           }
         }
       }
