@@ -45,8 +45,20 @@ const routes: Routes = [
     DropdownModule,
   ],
   providers: [],
-  declarations: [ CartPageComponent, OrderSummaryComponent, CartIconComponent, CheckoutPageComponent, ThankyouPageComponent],
-  exports: [ CartPageComponent, OrderSummaryComponent, CartIconComponent, CheckoutPageComponent, ThankyouPageComponent],
+  declarations: [
+    CartPageComponent,
+    OrderSummaryComponent,
+    CartIconComponent,
+    CheckoutPageComponent,
+    ThankyouPageComponent,
+  ],
+  exports: [
+    CartPageComponent,
+    OrderSummaryComponent,
+    CartIconComponent,
+    CheckoutPageComponent,
+    ThankyouPageComponent,
+  ],
 })
 export class OrdersModule {
   constructor(cartService: CartService) {

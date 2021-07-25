@@ -12,14 +12,14 @@ import { UiModule } from '@e-commerce/ui';
 import { ProductsModule } from '@e-commerce/products';
 import { NavComponent } from './shared/nav/nav.component';
 import { HttpClientModule } from '@angular/common/http';
-import {OrdersModule} from '@e-commerce/orders'
-import {ToastModule} from 'primeng/toast';
+import { OrdersModule } from '@e-commerce/orders';
+import { ToastModule } from 'primeng/toast';
 
 const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
-  }
+  },
 ];
 
 @NgModule({
@@ -39,7 +39,7 @@ const routes: Routes = [
     ProductsModule,
     AccordionModule,
     OrdersModule,
-    ToastModule
+    ToastModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
