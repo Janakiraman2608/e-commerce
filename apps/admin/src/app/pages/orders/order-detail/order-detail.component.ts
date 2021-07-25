@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order, OrderService } from '@e-commerce/orders';
@@ -15,7 +14,7 @@ export class OrderDetailComponent implements OnInit {
   order!: Order;
   status: any;
 
-    selectedStatus!: string;
+  selectedStatus!: string;
   constructor(
     private orderService: OrderService,
     private route: ActivatedRoute,
@@ -28,41 +27,44 @@ export class OrderDetailComponent implements OnInit {
     this._getOrder();
   }
   private _getOrderStatus() {
-    this.status = Object.entries(ORDER_STATUS).map((entry) =>
-      {
-        return{
-          id: entry[0],
-          name: entry[1].label
-        }
-      })
+    this.status = Object.entries(ORDER_STATUS).map((entry) => {
+      return {
+        id: entry[0],
+        name: entry[1].label,
+      };
+    });
   }
-  onStatusSel(event: any){
-    console.log(event.value)
-     this.orderService.updateOrder({status:event.value}, this.order.id).subscribe(() => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Order updated',
-      });
-      timer(2000)
-        .toPromise()
-        .then(() => {
-          this.router.navigate(['orders']);
-        });
-    },
-    () => {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Failed',
-        detail: 'Order not updated',
-      });
-    })
+  onStatusSel(event: any) {
+    console.log(event.value);
+    this.orderService
+      .updateOrder({ status: event.value }, this.order.id)
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Order updated',
+          });
+          timer(2000)
+            .toPromise()
+            .then(() => {
+              this.router.navigate(['orders']);
+            });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Failed',
+            detail: 'Order not updated',
+          });
+        }
+      );
   }
   private _getOrder() {
     this.route.params.subscribe((params) => {
       this.orderService.getOrder(params.id).subscribe((order) => {
         this.order = order;
-        this.selectedStatus = order.status
+        this.selectedStatus = order.status;
       });
     });
   }
