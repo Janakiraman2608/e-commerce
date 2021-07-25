@@ -1,0 +1,21 @@
+
+<p-toast></p-toast>
+<div class="products-page">
+  <div class="p-grid" >
+    <div class="p-col-3" *ngIf="!isCatPage">
+      <h4>Categories</h4>
+      <div class="p-field-checkbox" *ngFor="let category of categories">
+        <p-checkbox [(ngModel)]="category.checked" [binary]= "true" [inputId]="category.id" (onChange)="onCatFilter()">
+        </p-checkbox>
+        <label for="{{category.id}}">{{category.name}}</label>
+      </div>
+    </div>
+    <div [ngClass]="{'p-col-9': !isCatPage,'p-col-12': isCatPage }">
+      <div class="p-grid" *ngIf="products">
+        <div [ngClass]="{'p-col-4': !isCatPage,'p-col-3': isCatPage }" *ngFor="let product of products">
+          <products-product-item [product]="product"></products-product-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

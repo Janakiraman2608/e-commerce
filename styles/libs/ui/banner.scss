@@ -1,0 +1,39 @@
+.banner{
+  margin-top: 15px;
+  height: 260px;
+  width: 100%;
+  background-color: rgb(155, 205, 207);
+  border-radius: 15px;
+
+  &-text{
+    color: rgb(81, 82, 92);
+    margin-top: 50px;
+  }
+  h1{
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 400;
+  }
+  h2{
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+  }
+  &-image{
+    text-align: center;
+    padding: 15px 0 0 0;
+  }
+  &-button{
+   background-color: whitesmoke;
+   color: $primary-color;
+   border-radius: 15px;
+   border: 0;
+   height: 40px;
+
+   &:enabled:hover{
+    background-color: whitesmoke;
+    color: $primary-color;
+    border: 0;
+   }
+  }
+}

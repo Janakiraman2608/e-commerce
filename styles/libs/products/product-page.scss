@@ -1,0 +1,38 @@
+.product {
+  .name {
+    font-size: 1.2em;
+  }
+
+  .desc {
+    font-size: 1em;
+  }
+
+  .price {
+    font-size: 2em;
+    font-weight: 600;
+    margin: 15px 0;
+    border: 1px solid rgb(247, 234, 234);
+    padding: 10px 0;
+
+    .price-before {
+      font-size: 0.7em;
+      font-weight: 300;
+      text-decoration: line-through;
+      color: gray;
+    }
+  }
+
+  .quantity {
+    margin: 15px 0;
+
+    label {
+      font-size: 1.2em;
+    }
+  }
+  .p-button{
+    background-color: $primary-color;
+  }
+}
+.rich-desc {
+  line-height: 1.6;
+}

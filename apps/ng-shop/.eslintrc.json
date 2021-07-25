@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "eCommerce",
+            "prefix": "ngshop",
             "style": "camelCase"
           }
         ],
@@ -21,10 +21,14 @@
           "error",
           {
             "type": "element",
-            "prefix": "e-commerce",
+            "prefix": "ngshop",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "no-empty-lifecycle-method": "off",
+        "@angular-eslint/no-empty-lifecycle-method": "off"
       }
     },
     {

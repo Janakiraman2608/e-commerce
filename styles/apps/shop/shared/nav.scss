@@ -1,0 +1,17 @@
+.nav{
+  .isActive{
+    color: $primary-color;;
+  }
+  li{
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px;
+  }
+  a{
+    color: gray;
+    cursor: pointer;
+    &:hover{
+      color: $primary-color;
+    }
+  }
+}

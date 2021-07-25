@@ -1,0 +1,8 @@
+<div class="featured-products" style="margin-top: 30px;">
+  <h3 style="color: rgb(66, 63, 63);" >Featured Products</h3>
+  <div class="p-grid">
+    <div class="p-col-3" *ngFor="let product of featuredProducts">
+      <products-product-item [product]="product"></products-product-item>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="div admin-sidebar">
+  <div class="logo">
+    <img src="assets\logo.png" alt="logo">
+  </div>
+  <div class="links">
+    <ul>
+      <li routerLink=""><a><i class="pi pi-home"></i> Dashboard</a></li>
+      <li routerLink="/products"><a><i class="pi pi-briefcase"></i> Products</a></li>
+      <li routerLink="/categories"><a><i class="pi pi-list"></i> Categories</a></li>
+      <li routerLink="/orders"><a><i class="pi pi-shopping-cart"></i> Orders</a></li>
+      <li routerLink="/users"><a><i class="pi pi-users"></i> Users</a></li>
+      <li (click)="onLogout()" ><a class="logout"><i class="pi pi-sign-out"></i> Logout</a></li>
+    </ul>
+  </div>
+</div>

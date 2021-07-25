@@ -1,0 +1,19 @@
+<div class="order-summary">
+  <h4>Order Summary</h4>
+  <div class="summary">
+    <span>Item Price</span>
+    <span>{{totalPrice | currency}}</span>
+  </div>
+  <div class="summary">
+    <span>Package & Shipping</span>
+    <span style="color: green;">Free</span>
+  </div>
+  <div class="summary">
+    <span>Total Price</span>
+    <span>{{totalPrice | currency}}</span>
+  </div>
+  <div class="summary-button" *ngIf="!isCheckout">
+    <p-button label="Checkout" [routerLink]="['/checkout']"   styleClass="p-button-sm">
+    </p-button>
+  </div>
+</div>
