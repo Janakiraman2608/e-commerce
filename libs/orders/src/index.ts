@@ -9,6 +9,7 @@ export * from  '../src/lib/components/order-summary/order-summary.component'
 export * from  '../src/lib/pages/cart-page/cart-page.component'
 export * from  '../src/lib/pages/checkout-page/checkout-page.component'
 export * from  '../src/lib/pages/thankyou-page/thankyou-page.component'
+export * from './lib/order.constant'
 
 
 

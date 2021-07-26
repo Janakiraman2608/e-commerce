@@ -1,25 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, Category } from '@e-commerce/products';
 import { MessageService } from 'primeng/api';
-import { timer } from 'rxjs';
+import { Subject, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'admin-categories-form',
   templateUrl: './categories-form.component.html',
-  styles: [],
+  styles: []
 })
-export class CategoriesFormComponent implements OnInit {
-  form!: FormGroup;
-  editMode = false;
+export class CategoriesFormComponent implements OnInit, OnDestroy {
+  form: FormGroup;
   isSubmitted = false;
-  currentId!: string;
+  editmode = false;
+  currentCategoryId: string;
+  endsubs$: Subject<any> = new Subject();
+
   constructor(
-    private router: Router,
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private categoryService: CategoriesService,
+    private categoriesService: CategoriesService,
+    private location: Location,
     private route: ActivatedRoute
   ) {}
 
@@ -27,99 +31,111 @@ export class CategoriesFormComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       icon: ['', Validators.required],
-      color: ['#fff'],
+      color: ['#fff']
     });
-    this.checkMode();
+
+    this._checkEditMode();
   }
-  get categoryForm() {
-    return this.form.controls;
+
+  ngOnDestroy() {
+    this.endsubs$.next();
+    this.endsubs$.complete();
   }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.form.invalid) {
       return;
     }
-    if (this.editMode) {
-      this.updateCategory();
+    const category: Category = {
+      id: this.currentCategoryId,
+      name: this.categoryForm.name.value,
+      icon: this.categoryForm.icon.value,
+      color: this.categoryForm.color.value
+    };
+    if (this.editmode) {
+      this._updateCategory(category);
     } else {
-      this.addCategory();
+      this._addCategory(category);
     }
   }
 
-  updateCategory() {
-    const category: Category = {
-      id: this.currentId,
-      name: this.categoryForm.name.value,
-      icon: this.categoryForm.icon.value,
-      color: this.categoryForm.color.value
-    };
-    this.categoryService.updateCategory(category).subscribe(
-      () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `${category.name} is updated`,
-        });
-        timer(2000)
-          .toPromise()
-          .then(() => {
-            this.router.navigate(['categories']);
-          });
-      },
-      () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Failed',
-          detail: 'Category not updated',
-        });
-      }
-    );
-  }
-  onCancel()
-  {
-    this.router.navigate(['categories']);
-  }
-  addCategory() {
-    const category: Category = {
-      id: '',
-      name: this.categoryForm.name.value,
-      icon: this.categoryForm.icon.value,
-      color: this.categoryForm.color.value
-    };
-    this.categoryService.createCategory(category).subscribe(
-      () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Category created',
-        });
-        timer(2000)
-          .toPromise()
-          .then(() => {
-            this.router.navigate(['categories']);
-          });
-      },
-      () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Failed',
-          detail: 'Category not created',
-        });
-      }
-    );
+  onCancle() {
+    this.location.back();
   }
 
-  checkMode() {
-    this.route.params.subscribe((params) => {
+  private _addCategory(category: Category) {
+    this.categoriesService
+      .createCategory(category)
+      .pipe(takeUntil(this.endsubs$))
+      .subscribe(
+        (category: Category) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Category ${category.name} is created!`
+          });
+          timer(2000)
+            .toPromise()
+            .then(() => {
+              this.location.back();
+            });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Category is not created!'
+          });
+        }
+      );
+  }
+
+  private _updateCategory(category: Category) {
+    this.categoriesService
+      .updateCategory(category)
+      .pipe(takeUntil(this.endsubs$))
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Category is updated!'
+          });
+          timer(2000)
+            .toPromise()
+            .then(() => {
+              this.location.back();
+            });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Category is not updated!'
+          });
+        }
+      );
+  }
+
+  private _checkEditMode() {
+    this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
       if (params.id) {
-        this.editMode = true;
-        this.currentId = params.id;
-        this.categoryService.getCategory(this.currentId).subscribe((res) => {
-          this.categoryForm.name.setValue(res.name);
-          this.categoryForm.icon.setValue(res.icon);
-          this.categoryForm.color.setValue(res.color);
-        });
+        this.editmode = true;
+        this.currentCategoryId = params.id;
+        this.categoriesService
+          .getCategory(params.id)
+          .pipe(takeUntil(this.endsubs$))
+          .subscribe((category) => {
+            this.categoryForm.name.setValue(category.name);
+            this.categoryForm.icon.setValue(category.icon);
+            this.categoryForm.color.setValue(category.color);
+          });
       }
     });
+  }
+
+  get categoryForm() {
+    return this.form.controls;
   }
 }

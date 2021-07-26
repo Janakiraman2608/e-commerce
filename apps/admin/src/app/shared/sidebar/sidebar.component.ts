@@ -1,21 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { AuthService } from '@e-commerce/users';
 
 @Component({
   selector: 'admin-sidebar',
   templateUrl: './sidebar.component.html'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
+  constructor(private authService: AuthService) {}
 
-  constructor(private router: Router, private auth: AuthService) { }
-
-  ngOnInit(): void {
+  logoutUser() {
+    this.authService.logout();
   }
-
-  onLogout(){
-    this.auth.logout()
-    this.router.navigate(['/login'])
-  }
-
 }

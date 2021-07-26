@@ -1,40 +1,40 @@
-.orders {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(42, 42, 96, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
-  );
-}
-.products{
-  background: rgb(180,58,58);
-background: linear-gradient(90deg, rgba(180,58,58,1) 10%, rgba(13,65,37,1) 66%);
-}
-.users{
-  background: rgb(7,12,68);
-  background: linear-gradient(90deg, rgba(7,12,68,1) 0%, rgba(167,28,83,1) 100%);
-}
-.sales{
-  background: rgb(180,134,58);
-background: linear-gradient(90deg, rgba(180,134,58,1) 10%, rgba(38,5,15,1) 66%);
-}
-.d-items{
+.d-item {
   display: flex;
   text-align: center;
-  color: whitesmoke;
+  color: var(--surface-0);
   justify-content: space-between;
-  flex-direction: column;
 
-  .pi{
-    font-size: 4rem;
+  .pi {
+    font-size: 4em;
     margin-bottom: 15px;
   }
-  .name{
-    font-size: 1.4rem;
+
+  .name {
+    font-size: 1.4em;
   }
-  .number{
-    font-size: 2.3rem;
-    margin-top: 25px;
+
+  .number {
+    margin-top: 50px;
+    font-size: 2.5em;
   }
+}
+
+.d-orders {
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 33%);
+}
+
+.d-products {
+  background-color: #4158d0;
+  background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+}
+
+.d-users {
+  background-color: #3eecac;
+  background-image: linear-gradient(19deg, #3eecac 0%, #ee74e1 100%);
+}
+
+.d-totalsales {
+  background-color: #fbda61;
+  background-image: linear-gradient(45deg, #fbda61 0%, #ff5acd 100%);
 }

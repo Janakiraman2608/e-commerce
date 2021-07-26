@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../environments/environment'
 import { Product } from '../models/product';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -11,6 +12,12 @@ import { Product } from '../models/product';
 export class ProductsService {
   apiUrlProduct = environment.apiURL+'product/'
   constructor(private http: HttpClient) {}
+
+  getProductsCount(): Observable<number> {
+    return this.http
+      .get<number>(`${this.apiUrlProduct}/get/count`)
+      .pipe(map((objectValue: any) => objectValue.productCount));
+  }
 
   getProducts(selectedCats?: string[]): Observable<Product[]> {
     let params = new HttpParams()

@@ -1,50 +1,39 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { environment } from '@env/environment';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { OrderService } from '@e-commerce/orders';
+import { ProductsService } from '@e-commerce/products';
+import { UserService } from '@e-commerce/users';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'admin-dashboard',
-  templateUrl: './dashboard.component.html',
+  templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
-  orders?: number;
-  products?: number;
-  users?: number;
-  sales?: number;
+export class DashboardComponent implements OnInit, OnDestroy {
+  statistics = [];
+  endsubs$: Subject<any> = new Subject();
 
-  apiUrlUser = environment.apiURL + 'user/get/count';
-  apiUrlProduct = environment.apiURL + 'product/get/count';
-  apiUrlOrder = environment.apiURL + 'order/get/count';
-  apiUrlSales = environment.apiURL + 'order/get/totalsales';
-  constructor(private http: HttpClient) {}
+  constructor(
+    private userService: UserService,
+    private productService: ProductsService,
+    private ordersService: OrderService
+  ) {}
 
   ngOnInit(): void {
-    this.getOrders()
-    this.getProducts()
-    this.getUsers()
-    this.getSales()
+    combineLatest([
+      this.ordersService.getOrdersCount(),
+      this.productService.getProductsCount(),
+      this.userService.getUsersCount(),
+      this.ordersService.getTotalSales()
+    ])
+      .pipe(takeUntil(this.endsubs$))
+      .subscribe((values) => {
+        this.statistics = values;
+      });
   }
 
-  getUsers() {
-    this.http.get<{ userCount: number }>(this.apiUrlUser).subscribe((res) => {
-      this.users = res.userCount;
-    });
-  }
-
-  getProducts() {
-    this.http.get<{ productCount: number }>(this.apiUrlProduct).subscribe((res) => {
-      this.products = res.productCount;
-    });
-  }
-
-  getOrders() {
-    this.http.get<{ orderCount: number }>(this.apiUrlOrder).subscribe((res) => {
-      this.orders = res.orderCount;
-    });
-  }
-  getSales() {
-    this.http.get<{ totalSales: number }>(this.apiUrlSales).subscribe((res) => {
-      this.sales = res.totalSales;
-    });
+  ngOnDestroy() {
+    this.endsubs$.next();
+    this.endsubs$.complete();
   }
 }
